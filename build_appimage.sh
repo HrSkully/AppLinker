@@ -1,24 +1,36 @@
 #!/bin/bash
-# Abhängigkeiten installieren (einmalig nötig)
-# pip install pyinstaller
 
-# Alles zu einer ausführbaren Datei bündeln
-pyinstaller --noconfirm --onefile --windowed \
+echo "Bündle Python-Code mit PyInstaller..."
+pip install pyinstaller --quiet
+
+python3 -m PyInstaller --noconfirm --onefile --windowed \
+            --paths core \
             --add-data "icons:icons" \
             --name "yail" \
             core/main.py
 
-# Linuxdeploy nutzen, um das AppImage zu bauen
-# Download von linuxdeploy herunter, falls nicht vorhanden
 if [ ! -f linuxdeploy-x86_64.AppImage ]; then
-    wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+    echo "Lade linuxdeploy herunter..."
+    wget -c https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
     chmod +x linuxdeploy-x86_64.AppImage
 fi
 
-# AppImage generieren
 export OUTPUT="YAIL-x86_64.AppImage"
-./linuxdeploy-x86_64.AppImage --executable dist/yail \
-    --description "Yet Another AppImage Linker" \
+export APPIMAGE_EXTRACT_AND_RUN=1
+
+if ./linuxdeploy-x86_64.AppImage --executable dist/yail \
     --icon-file icons/yail_icon.png \
-    --display-name "YAIL" \
-    --appdir AppDir --output appimage
+    --icon-filename yail \
+    --appdir AppDir \
+    --create-desktop-file \
+    --output appimage; then
+    echo "------------------------------------------------"
+    echo "ERFOLG: AppImage wurde erstellt: $OUTPUT"
+    echo "------------------------------------------------"
+else
+    echo "------------------------------------------------"
+    echo "FEHLER: AppImage konnte nicht erstellt werden."
+    echo "Wahrscheinlich liegt es am Icon (max. 512x512 erlaubt)."
+    echo "------------------------------------------------"
+    exit 1
+fi
