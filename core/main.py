@@ -1,9 +1,19 @@
 import sys
 import os
 from PyQt6.QtWidgets import QApplication, QFileDialog, QMessageBox
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from ui.maingui import YAILGui
 from logic import create_desktop_file
+import ctypes
+from PyQt6.QtGui import QIcon
+
+try:
+    myappid = 'yail.appimage.linker.v1'
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+except AttributeError:
+    pass
 
 class MainWindow(YAILGui):
     def __init__(self):
@@ -40,8 +50,19 @@ class MainWindow(YAILGui):
         else:
             QMessageBox.critical(self, "Fehler", msg)
 
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    icon_full_path = os.path.join(base_dir, 'icons', 'yail_icon.png')
+
+    if os.path.exists(icon_full_path):
+        app.setWindowIcon(QIcon(icon_full_path))
+
+    app.setApplicationName("YAIL")
+    app.setDesktopFileName("yail")
+
     window = MainWindow()
     window.show()
     sys.exit(app.exec())

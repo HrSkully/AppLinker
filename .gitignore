@@ -23,6 +23,7 @@ wheels/
 .venv
 venv/
 ENV/
+*.spec
 
 # OS spezifisch
 .DS_Store
@@ -34,3 +35,12 @@ ENV/
 
 # JetBrains
 .idea/
+
+# Temporärer Ordner für linuxdeploy
+AppDir/
+
+# Die fertigen AppImages (große Binärdateien)
+*.AppImage
+
+# Das heruntergeladene Tool selbst
+linuxdeploy-x86_64.AppImage

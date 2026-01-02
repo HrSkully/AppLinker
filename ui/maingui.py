@@ -1,11 +1,19 @@
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QPushButton,
-                             QLineEdit, QLabel)
+import os
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QLineEdit, QLabel
 
 class YAILGui(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('YAIL - Yet Another AppImage Linker')
-        self.setMinimumWidth(400)
+        self.setMinimumWidth(500)
+        self.setMinimumHeight(200)
+
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        icon_path = os.path.join(base_dir, 'icons', 'yail_icon.png')
+
+        if os.path.exists(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
 
         layout = QVBoxLayout()
 
