@@ -24,10 +24,6 @@ wheels/
 venv/
 ENV/
 
-# Qt / PyQt6
-# Falls du später .ui Dateien in .py umwandelst
-# ui/maingui.py
-
 # OS spezifisch
 .DS_Store
 .directory
@@ -35,3 +31,6 @@ ENV/
 
 # YAIL spezifisch
 /tmp/squashfs-root/
+
+# JetBrains
+.idea/
