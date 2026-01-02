@@ -11,3 +11,6 @@
 
 ## Installation
 Comming soon...
+
+## Lizenz
+Dieses Projekt ist unter der MIT-Lizenz lizenziert – siehe die [LICENSE](LICENSE) Datei für Details.
