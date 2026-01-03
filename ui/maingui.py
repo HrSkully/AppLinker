@@ -1,52 +1,72 @@
-import os
-from PyQt6.QtGui import QIcon
+import locale
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
-                             QLineEdit, QLabel, QTabWidget, QListWidget)
+                             QLineEdit, QLabel, QTabWidget, QListWidget, QComboBox)
+from core.i18n import TRANSLATIONS
 
 
 class AppLinkerGui(QWidget):
     def __init__(self):
         super().__init__()
+
+        # Initialer Sprach-Check
+        try:
+            self.lang_code = locale.getdefaultlocale()[0][:2]
+        except:
+            self.lang_code = 'en'
+
+        self.texts = TRANSLATIONS.get(self.lang_code, TRANSLATIONS['en'])
+
         self.setWindowTitle('AppLinker')
-        self.setMinimumWidth(500)
-        self.setMinimumHeight(400)
+        self.setMinimumWidth(520)
+        self.setMinimumHeight(480)
 
-        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        icon_path = os.path.join(base_dir, 'icons', 'AppLinker_icon.png')
-
-        if os.path.exists(icon_path):
-            self.setWindowIcon(QIcon(icon_path))
-
-        # Hauptlayout mit Tabs
         self.main_layout = QVBoxLayout()
+
+        # --- TOP BAR (Sprachumschalter) ---
+        top_bar = QHBoxLayout()
+        self.combo_lang = QComboBox()
+        self.combo_lang.addItems(['Deutsch', 'English'])
+        self.combo_lang.setCurrentIndex(0 if self.lang_code == 'de' else 1)
+
+        top_bar.addStretch()
+        top_bar.addWidget(QLabel("🌐"))
+        top_bar.addWidget(self.combo_lang)
+        self.main_layout.addLayout(top_bar)
+
         self.tabs = QTabWidget()
 
         # --- TAB 1: ERSTELLEN ---
         self.tab_create = QWidget()
         create_layout = QVBoxLayout()
 
-        create_layout.addWidget(QLabel('Name der Anwendung:'))
+        self.lbl_name = QLabel(self.texts['lbl_name'])
         self.name_input = QLineEdit()
-        create_layout.addWidget(self.name_input)
 
-        create_layout.addWidget(QLabel('Beschreibung (optional):'))
+        self.lbl_desc = QLabel(self.texts['lbl_desc'])
         self.desc_input = QLineEdit()
-        self.desc_input.setPlaceholderText('z.B. Mein lieblings Grafikprogramm')
-        create_layout.addWidget(self.desc_input)
+        self.desc_input.setPlaceholderText(self.texts['ph_desc'])
 
-        create_layout.addWidget(QLabel('Pfad zur ausführbaren Datei:'))
+        self.lbl_path = QLabel(self.texts['lbl_path'])
         self.path_input = QLineEdit()
-        self.btn_browse_app = QPushButton('Datei wählen')
+        self.btn_browse_app = QPushButton(self.texts['btn_browse'])
+
+        self.lbl_icon = QLabel(self.texts['lbl_icon'])
+        self.icon_input = QLineEdit()
+        self.btn_browse_icon = QPushButton(self.texts['btn_icon'])
+
+        self.btn_create = QPushButton(self.texts['btn_register'])
+
+        # Widgets hinzufügen
+        create_layout.addWidget(self.lbl_name)
+        create_layout.addWidget(self.name_input)
+        create_layout.addWidget(self.lbl_desc)
+        create_layout.addWidget(self.desc_input)
+        create_layout.addWidget(self.lbl_path)
         create_layout.addWidget(self.path_input)
         create_layout.addWidget(self.btn_browse_app)
-
-        create_layout.addWidget(QLabel('Icon Pfad:'))
-        self.icon_input = QLineEdit()
-        self.btn_browse_icon = QPushButton('Icon wählen')
+        create_layout.addWidget(self.lbl_icon)
         create_layout.addWidget(self.icon_input)
         create_layout.addWidget(self.btn_browse_icon)
-
-        self.btn_create = QPushButton('Systemweit registrieren')
         create_layout.addStretch()
         create_layout.addWidget(self.btn_create)
         self.tab_create.setLayout(create_layout)
@@ -55,35 +75,33 @@ class AppLinkerGui(QWidget):
         self.tab_manage = QWidget()
         manage_layout = QVBoxLayout()
 
-        manage_layout.addWidget(QLabel('Erstellte Verknüpfungen:'))
+        self.lbl_list = QLabel(self.texts['lbl_list'])
         self.list_apps = QListWidget()
-        manage_layout.addWidget(self.list_apps)
 
         button_layout = QHBoxLayout()
-        self.btn_refresh = QPushButton('Liste aktualisieren')
-        self.btn_delete = QPushButton('Ausgewählte löschen')
+        self.btn_refresh = QPushButton(self.texts['btn_refresh'])
+        self.btn_delete = QPushButton(self.texts['btn_delete'])
         self.btn_delete.setStyleSheet("background-color: #c0392b; color: white;")
-
         button_layout.addWidget(self.btn_refresh)
         button_layout.addWidget(self.btn_delete)
-        manage_layout.addLayout(button_layout)
 
+        manage_layout.addWidget(self.lbl_list)
+        manage_layout.addWidget(self.list_apps)
+        manage_layout.addLayout(button_layout)
         self.tab_manage.setLayout(manage_layout)
 
         # Tabs hinzufügen
-        self.tabs.addTab(self.tab_create, "Erstellen")
-        self.tabs.addTab(self.tab_manage, "Verwalten")
+        self.tabs.addTab(self.tab_create, self.texts['tab_create'])
+        self.tabs.addTab(self.tab_manage, self.texts['tab_manage'])
 
         self.main_layout.addWidget(self.tabs)
-        self.setLayout(self.main_layout)
 
         # --- STATUSBAR ---
         self.status_layout = QHBoxLayout()
-        self.version_label = QLabel('v1.2.0')
+        self.version_label = QLabel('v1.3.0')
         self.version_label.setStyleSheet("color: gray; font-size: 10px;")
-
         self.status_layout.addStretch()
         self.status_layout.addWidget(self.version_label)
-
         self.main_layout.addLayout(self.status_layout)
+
         self.setLayout(self.main_layout)

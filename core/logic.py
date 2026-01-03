@@ -1,5 +1,27 @@
 import os
 import subprocess
+import json
+
+CONFIG_PATH = os.path.expanduser("~/.config/applinker/config.json")
+
+def load_config():
+    """Lädt die Konfiguration oder gibt Standardwerte zurück."""
+    if os.path.exists(CONFIG_PATH):
+        try:
+            with open(CONFIG_PATH, 'r') as f:
+                return json.load(f)
+        except:
+            pass
+    return {"language": None}
+
+def save_config(config_data):
+    """Speichert die Konfiguration im Home-Verzeichnis."""
+    os.makedirs(os.path.dirname(CONFIG_PATH), exist_ok=True)
+    try:
+        with open(CONFIG_PATH, 'w') as f:
+            json.dump(config_data, f, indent=4)
+    except Exception as e:
+        print(f"Fehler beim Speichern der Config: {e}")
 
 def create_desktop_file(name, exec_path, icon_path, description, wm_class, categories="Utility;"):
     file_id = name.lower().replace(' ', '_')

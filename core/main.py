@@ -1,18 +1,19 @@
-import subprocess
+import locale
 import sys
 import os
-
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QFileDialog, QMessageBox, QListWidgetItem
+from i18n import TRANSLATIONS
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from ui.maingui import AppLinkerGui
-from logic import create_desktop_file, get_installed_apps, delete_desktop_file
+from logic import create_desktop_file, get_installed_apps, delete_desktop_file, load_config, save_config
 import ctypes
 from PyQt6.QtGui import QIcon
 
-__version__ = "1.2.0"
+
+__version__ = "1.3.0"
 
 try:
     myappid = 'AppLinker.appimage.linker.v1'
@@ -22,8 +23,24 @@ except AttributeError:
 
 class MainWindow(AppLinkerGui):
     def __init__(self):
+
+        self.config = load_config()
+
+        if self.config.get("language"):
+            self.lang_code = self.config["language"]
+        else:
+            try:
+                self.lang_code = locale.getdefaultlocale()[0][:2]
+            except:
+                self.lang_code = 'en'
+
         super().__init__()
 
+        self.texts = TRANSLATIONS.get(self.lang_code, TRANSLATIONS['en'])
+        self.retranslate_ui()
+        self.combo_lang.setCurrentIndex(0 if self.lang_code == 'de' else 1)
+
+        self.combo_lang.currentIndexChanged.connect(self.change_language)
         self.version_label.setText(f"v{__version__}")
 
         self.btn_browse_app.clicked.connect(self.select_app)
@@ -33,6 +50,37 @@ class MainWindow(AppLinkerGui):
         self.btn_delete.clicked.connect(self.delete_selected_app)
 
         self.refresh_app_list()
+
+    def change_language(self):
+        new_lang = 'de' if self.combo_lang.currentIndex() == 0 else 'en'
+        self.lang_code = new_lang
+        self.texts = TRANSLATIONS[new_lang]
+
+        self.config["language"] = new_lang
+        save_config(self.config)
+
+        self.retranslate_ui()
+
+    def retranslate_ui(self):
+        """Aktualisiert alle Texte in der UI basierend auf self.texts"""
+        # Fenster & Tabs
+        self.tabs.setTabText(0, self.texts['tab_create'])
+        self.tabs.setTabText(1, self.texts['tab_manage'])
+
+        # Erstellen Tab
+        self.lbl_name.setText(self.texts['lbl_name'])
+        self.lbl_desc.setText(self.texts['lbl_desc'])
+        self.desc_input.setPlaceholderText(self.texts['ph_desc'])
+        self.lbl_path.setText(self.texts['lbl_path'])
+        self.btn_browse_app.setText(self.texts['btn_browse'])
+        self.lbl_icon.setText(self.texts['lbl_icon'])
+        self.btn_browse_icon.setText(self.texts['btn_icon'])
+        self.btn_create.setText(self.texts['btn_register'])
+
+        # Verwalten Tab
+        self.lbl_list.setText(self.texts['lbl_list'])
+        self.btn_refresh.setText(self.texts['btn_refresh'])
+        self.btn_delete.setText(self.texts['btn_delete'])
 
     def refresh_app_list(self):
         self.list_apps.clear()
@@ -78,7 +126,7 @@ class MainWindow(AppLinkerGui):
         wm_class = app_name.lower().replace(" ", "-")
 
         self.btn_create.setEnabled(False)
-        self.btn_create.setText("Warte auf Autorisierung...")
+        self.btn_create.setText(self.texts['msg_wait'])
         QApplication.processEvents()
 
         success, msg = create_desktop_file(
