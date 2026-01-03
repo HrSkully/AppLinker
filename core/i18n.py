@@ -13,7 +13,9 @@ TRANSLATIONS = {
         'lbl_list': 'Erstellte Verknüpfungen:',
         'btn_refresh': 'Liste aktualisieren',
         'btn_delete': 'Ausgewählte löschen',
-        'msg_wait': 'Warte auf Autorisierung...'
+        'msg_wait': 'Warte auf Autorisierung...',
+        'lang_de': 'Deutsch',
+        'lang_en': 'Englisch'
     },
     'en': {
         'tab_create': 'Create',
@@ -29,6 +31,8 @@ TRANSLATIONS = {
         'lbl_list': 'Created Shortcuts:',
         'btn_refresh': 'Refresh List',
         'btn_delete': 'Delete Selected',
-        'msg_wait': 'Waiting for authorization...'
+        'msg_wait': 'Waiting for authorization...',
+        'lang_de': 'German',
+        'lang_en': 'English'
     }
 }

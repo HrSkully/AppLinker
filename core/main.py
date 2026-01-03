@@ -23,7 +23,7 @@ except AttributeError:
 
 class MainWindow(AppLinkerGui):
     def __init__(self):
-
+        super().__init__()
         self.config = load_config()
 
         if self.config.get("language"):
@@ -33,8 +33,6 @@ class MainWindow(AppLinkerGui):
                 self.lang_code = locale.getdefaultlocale()[0][:2]
             except:
                 self.lang_code = 'en'
-
-        super().__init__()
 
         self.texts = TRANSLATIONS.get(self.lang_code, TRANSLATIONS['en'])
         self.retranslate_ui()
@@ -63,6 +61,17 @@ class MainWindow(AppLinkerGui):
 
     def retranslate_ui(self):
         """Aktualisiert alle Texte in der UI basierend auf self.texts"""
+
+        self.combo_lang.blockSignals(True)
+        current_idx = self.combo_lang.currentIndex()
+
+        # Sprachauswahl Combobox
+        self.combo_lang.clear()
+        self.combo_lang.addItems([self.texts['lang_de'], self.texts['lang_en']])
+        self.combo_lang.setCurrentIndex(current_idx)
+
+        self.combo_lang.blockSignals(False)
+
         # Fenster & Tabs
         self.tabs.setTabText(0, self.texts['tab_create'])
         self.tabs.setTabText(1, self.texts['tab_manage'])
@@ -81,6 +90,9 @@ class MainWindow(AppLinkerGui):
         self.lbl_list.setText(self.texts['lbl_list'])
         self.btn_refresh.setText(self.texts['btn_refresh'])
         self.btn_delete.setText(self.texts['btn_delete'])
+
+        # Sprachauswahl Combobox
+
 
     def refresh_app_list(self):
         self.list_apps.clear()

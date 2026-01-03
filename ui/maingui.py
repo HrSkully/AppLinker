@@ -25,7 +25,7 @@ class AppLinkerGui(QWidget):
         # --- TOP BAR (Sprachumschalter) ---
         top_bar = QHBoxLayout()
         self.combo_lang = QComboBox()
-        self.combo_lang.addItems(['Deutsch', 'English'])
+        self.combo_lang.addItems([self.texts['lang_de'], self.texts['lang_en']])
         self.combo_lang.setCurrentIndex(0 if self.lang_code == 'de' else 1)
 
         top_bar.addStretch()
