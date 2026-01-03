@@ -6,7 +6,7 @@ pip install pyinstaller --quiet
 python3 -m PyInstaller --noconfirm --onefile --windowed \
             --paths core \
             --add-data "icons:icons" \
-            --name "yail" \
+            --name "AppLinker" \
             core/main.py
 
 if [ ! -f linuxdeploy-x86_64.AppImage ]; then
@@ -15,12 +15,12 @@ if [ ! -f linuxdeploy-x86_64.AppImage ]; then
     chmod +x linuxdeploy-x86_64.AppImage
 fi
 
-export OUTPUT="YAIL-x86_64.AppImage"
+export OUTPUT="AppLinker-x86_64.AppImage"
 export APPIMAGE_EXTRACT_AND_RUN=1
 
-if ./linuxdeploy-x86_64.AppImage --executable dist/yail \
-    --icon-file icons/yail_icon.png \
-    --icon-filename yail \
+if ./linuxdeploy-x86_64.AppImage --executable dist/AppLinker \
+    --icon-file icons/AppLinker_icon.png \
+    --icon-filename AppLinker \
     --appdir AppDir \
     --create-desktop-file \
     --output appimage; then

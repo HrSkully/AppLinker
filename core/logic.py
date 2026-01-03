@@ -16,7 +16,7 @@ def create_desktop_file(name, exec_path, icon_path, categories="Utility;"):
     Type=Application
     Terminal=false
     Categories={categories}
-    Comment=Created with YAIL
+    Comment=Created with AppLinker
     """
 
     with open(temp_desktop, "w") as f:

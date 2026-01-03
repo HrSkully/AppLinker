@@ -30,7 +30,7 @@ ENV/
 .directory
 *.swp
 
-# YAIL spezifisch
+# AppLinker spezifisch
 /tmp/squashfs-root/
 
 # JetBrains
