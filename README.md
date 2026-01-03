@@ -13,11 +13,9 @@
 
 **AppLinker** is a lightweight GUI tool built with Python and PyQt6, designed to seamlessly integrate AppImage files (and other executables) into Linux desktop environments. It automatically creates `.desktop` entries so your apps appear in your application menu, feature proper icons, and can be pinned to your dock.
 
-### 📸 Screenshot
+### 📸 Screenshots
 <p align="center">
   <img src="docs/AppLinker_1.png" alt="AppLinker GUI" width="600" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-</p>
-<p align="center">
   <img src="docs/AppLinker_2.png" alt="AppLinker GUI" width="600" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
 </p>
 
