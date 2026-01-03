@@ -5,24 +5,34 @@ from core.i18n import TRANSLATIONS
 
 
 class AppLinkerGui(QWidget):
+    """
+    Base GUI class for AppLinker.
+    Defines the visual layout, widgets, and initial language setup.
+    """
+
     def __init__(self):
         super().__init__()
 
-        # Initialer Sprach-Check
+        # Automatic language detection based on system locale
         try:
             self.lang_code = locale.getdefaultlocale()[0][:2]
-        except:
+        except (AttributeError, IndexError):
+            # Fallback to English if detection fails
             self.lang_code = 'en'
 
+        # Load dictionary for the detected language
         self.texts = TRANSLATIONS.get(self.lang_code, TRANSLATIONS['en'])
 
+        # Basic window configuration
         self.setWindowTitle('AppLinker')
         self.setMinimumWidth(520)
         self.setMinimumHeight(480)
 
+        # Main vertical layout container
         self.main_layout = QVBoxLayout()
 
-        # --- TOP BAR (Sprachumschalter) ---
+        # --- TOP BAR (Language Selection) ---
+        # Provides a dropdown menu for manual language override
         top_bar = QHBoxLayout()
         self.combo_lang = QComboBox()
         self.combo_lang.addItems([self.texts['lang_de'], self.texts['lang_en']])
@@ -33,9 +43,11 @@ class AppLinkerGui(QWidget):
         top_bar.addWidget(self.combo_lang)
         self.main_layout.addLayout(top_bar)
 
+        # Tab widget for separating "Creation" and "Management" views
         self.tabs = QTabWidget()
 
-        # --- TAB 1: ERSTELLEN ---
+        # --- TAB 1: CREATE SHORTCUT ---
+        # UI components for entering application metadata and executable paths
         self.tab_create = QWidget()
         create_layout = QVBoxLayout()
 
@@ -56,7 +68,7 @@ class AppLinkerGui(QWidget):
 
         self.btn_create = QPushButton(self.texts['btn_register'])
 
-        # Widgets hinzufügen
+        # Assembling the creation layout
         create_layout.addWidget(self.lbl_name)
         create_layout.addWidget(self.name_input)
         create_layout.addWidget(self.lbl_desc)
@@ -71,7 +83,8 @@ class AppLinkerGui(QWidget):
         create_layout.addWidget(self.btn_create)
         self.tab_create.setLayout(create_layout)
 
-        # --- TAB 2: VERWALTEN ---
+        # --- TAB 2: MANAGE SHORTCUTS ---
+        # UI components for listing and deleting existing AppLinker entries
         self.tab_manage = QWidget()
         manage_layout = QVBoxLayout()
 
@@ -81,7 +94,9 @@ class AppLinkerGui(QWidget):
         button_layout = QHBoxLayout()
         self.btn_refresh = QPushButton(self.texts['btn_refresh'])
         self.btn_delete = QPushButton(self.texts['btn_delete'])
+        # Highlight delete button with red background for safety awareness
         self.btn_delete.setStyleSheet("background-color: #c0392b; color: white;")
+
         button_layout.addWidget(self.btn_refresh)
         button_layout.addWidget(self.btn_delete)
 
@@ -90,16 +105,18 @@ class AppLinkerGui(QWidget):
         manage_layout.addLayout(button_layout)
         self.tab_manage.setLayout(manage_layout)
 
-        # Tabs hinzufügen
+        # Finalizing tab addition
         self.tabs.addTab(self.tab_create, self.texts['tab_create'])
         self.tabs.addTab(self.tab_manage, self.texts['tab_manage'])
 
         self.main_layout.addWidget(self.tabs)
 
-        # --- STATUSBAR ---
+        # --- STATUS BAR ---
+        # Displays the current software version at the bottom right
         self.status_layout = QHBoxLayout()
-        self.version_label = QLabel('v1.3.0')
+        self.version_label = QLabel('')
         self.version_label.setStyleSheet("color: gray; font-size: 10px;")
+
         self.status_layout.addStretch()
         self.status_layout.addWidget(self.version_label)
         self.main_layout.addLayout(self.status_layout)
