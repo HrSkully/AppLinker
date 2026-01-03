@@ -1,4 +1,4 @@
-# AppLinker - Yet Another AppImage Linker 🚀
+# AppLinker 🚀
 
 <p align="center">
   <img src="icons/AppLinker_icon.png" width="128" alt="AppLinker Logo">
