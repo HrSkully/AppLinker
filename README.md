@@ -1,5 +1,9 @@
 # YAIL - Yet Another AppImage Linker 🚀
 
+<p align="center">
+  <img src="icons/yail_icon.png" width="128" alt="YAIL Logo">
+</p>
+
 ![Build Status](https://github.com/HrSkully/YAIL/actions/workflows/release.yml/badge.svg)
 
 **YAIL** ist ein schlankes GUI-Tool basierend auf Python und PyQt6, um AppImage-Dateien (oder andere ausführbare Dateien) nahtlos in Linux-Desktop-Umgebungen zu integrieren. Es erstellt automatisch `.desktop`-Dateien, damit deine Apps im App-Menü erscheinen, ein Icon haben und an das Dock angeheftet werden können.
@@ -19,13 +23,28 @@ Der einfachste Weg, YAIL zu nutzen, ist das fertige AppImage:
 2. **Ausführbar machen:** Klicke rechts auf die Datei -> Eigenschaften -> Berechtigungen -> "Datei als Programm ausführen" (oder via Terminal: `chmod +x YAIL-x86_64.AppImage`).
 3. **Starten:** Doppelklick auf die Datei und loslegen!
 
-> **Hinweis:** Da YAIL Starter systemweit unter `/usr/share/applications/` erstellt, wird beim Speichern nach deinem Passwort gefragt (`pkexec`).
+> **Hinweis:** Da YAIL Starter systemweit erstellt, wird beim Speichern nach deinem Passwort gefragt (`pkexec`), um Schreibrechte für `/usr/share/applications/` zu erhalten.
 
 ## Für Entwickler (Source Code)
 
-Falls du das Tool aus dem Quellcode starten möchtest:
+Falls du das Tool aus dem Quellcode starten oder daran arbeiten möchtest:
 
-1. Repository klonen:
-   ```bash
-   git clone [https://github.com/HrSkully/YAIL.git](https://github.com/HrSkully/YAIL.git)
-   cd YAIL
+### 1. Repository klonen
+```bash
+git clone [https://github.com/HrSkully/YAIL.git](https://github.com/HrSkully/YAIL.git)
+cd YAIL
+
+### 2. Abhängigkeiten installieren
+Stelle sicher, dass du Python installiert hast und führe dann aus:
+```bash
+pip install PyQt6
+
+### 3. Programm starten
+Starte das Programm über den python interpreter:
+```bash
+python core/main.py
+
+## Lizenz
+Dieses Projekt ist unter der MIT-Lizenz lizenziert – siehe die LICENSE Datei für Details.
+
+
