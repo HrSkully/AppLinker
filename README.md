@@ -33,16 +33,19 @@ Falls du das Tool aus dem Quellcode starten oder daran arbeiten möchtest:
 ```bash
 git clone [https://github.com/HrSkully/YAIL.git](https://github.com/HrSkully/YAIL.git)
 cd YAIL
+```
 
 ### 2. Abhängigkeiten installieren
 Stelle sicher, dass du Python installiert hast und führe dann aus:
 ```bash
 pip install PyQt6
+```
 
 ### 3. Programm starten
 Starte das Programm über den python interpreter:
 ```bash
 python core/main.py
+```
 
 ## Lizenz
 Dieses Projekt ist unter der MIT-Lizenz lizenziert – siehe die LICENSE Datei für Details.
