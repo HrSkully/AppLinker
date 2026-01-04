@@ -2,6 +2,7 @@ import locale
 import sys
 import os
 import ctypes
+import webbrowser
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QFileDialog, QMessageBox, QListWidgetItem
@@ -14,7 +15,7 @@ from ui.maingui import AppLinkerGui
 from logic import (create_desktop_file, get_installed_apps, delete_desktop_file,
                    load_config, save_config)
 
-__version__ = "1.3.1"
+__version__ = "1.4.0"
 
 # Attempt to set a unique AppUserModelID for Windows taskbar grouping
 try:
@@ -58,6 +59,7 @@ class MainWindow(AppLinkerGui):
         self.combo_lang.blockSignals(False)
 
         # UI signals and slots connections
+        self.btn_bug.clicked.connect(self.open_bug_report)
         self.combo_lang.currentIndexChanged.connect(self.change_language)
         self.version_label.setText(f"v{__version__}")
         self.btn_browse_app.clicked.connect(self.select_app)
@@ -68,6 +70,11 @@ class MainWindow(AppLinkerGui):
 
         # Initial load of installed applications
         self.refresh_app_list()
+
+    def open_bug_report(self):
+        """Opens the GitHub issues page in the default web browser."""
+        url = "https://github.com/HrSkully/AppLinker/issues/new"
+        webbrowser.open(url)
 
     def change_language(self):
         """

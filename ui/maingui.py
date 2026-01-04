@@ -3,7 +3,6 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
                              QLineEdit, QLabel, QTabWidget, QListWidget, QComboBox)
 from core.i18n import TRANSLATIONS
 
-
 class AppLinkerGui(QWidget):
     """
     Base GUI class for AppLinker.
@@ -32,8 +31,16 @@ class AppLinkerGui(QWidget):
         self.main_layout = QVBoxLayout()
 
         # --- TOP BAR (Language Selection) ---
-        # Provides a dropdown menu for manual language override
+
         top_bar = QHBoxLayout()
+
+        # Bug Report Button
+        self.btn_bug = QPushButton("🪲")
+        self.btn_bug.setFixedSize(30, 30)
+        self.btn_bug.setToolTip("Report a Bug / Request Feature")
+        self.btn_bug.setStyleSheet("QPushButton { border: none; font-size: 16px; } QPushButton:hover { border-radius: 5px; }")
+
+        # Provides a dropdown menu for manual language override
         self.combo_lang = QComboBox()
         self.combo_lang.addItems([self.texts['lang_de'], self.texts['lang_en']])
         self.combo_lang.setCurrentIndex(0 if self.lang_code == 'de' else 1)
@@ -117,6 +124,7 @@ class AppLinkerGui(QWidget):
         self.version_label = QLabel('')
         self.version_label.setStyleSheet("color: gray; font-size: 10px;")
 
+        self.status_layout.addWidget(self.btn_bug)
         self.status_layout.addStretch()
         self.status_layout.addWidget(self.version_label)
         self.main_layout.addLayout(self.status_layout)
